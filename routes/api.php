@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\v1\CardController;
+use App\Http\Controllers\Api\v1\MerchantController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 
@@ -22,5 +23,9 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 Route::prefix('v1')->name('v1.')->group(function () {
     Route::name('cards.')->controller(CardController::class)->group(function () {
         Route::post('/cards', 'store')->name('store');
+    });
+
+    Route::name('merchants.')->controller(MerchantController::class)->group(function () {
+        Route::get('/merchants/{merchant}', 'show')->name('show');
     });
 });
