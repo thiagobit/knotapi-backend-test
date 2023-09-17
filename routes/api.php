@@ -32,5 +32,7 @@ Route::prefix('v1')->name('v1.')->group(function () {
 
     Route::name('tasks.')->controller(TaskController::class)->group(function () {
         Route::post('/tasks', 'store')->name('store');
+        Route::patch('/tasks/{task}/finish', 'finish')->name('finish');
+        Route::patch('/tasks/{task}/fail', 'fail')->name('fail');
     });
 });
