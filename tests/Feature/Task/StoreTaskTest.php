@@ -6,6 +6,7 @@ use App\Models\Card;
 use App\Models\Merchant;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Auth;
 use Tests\ApiTestCase;
 
 class StoreTaskTest extends ApiTestCase
@@ -22,6 +23,18 @@ class StoreTaskTest extends ApiTestCase
             ->assertSuccessful();
 
         $this->assertDatabaseHas('tasks', ['card_id' => $card->id, 'merchant_id' => $merchant->id]);
+    }
+
+    /** @test */
+    public function tasks_can_not_be_stored_stored_by_guests()
+    {
+        Auth::logout();
+
+        $card = Card::factory()->create();
+        $merchant = Merchant::factory()->create();
+
+        $this->post(route('v1.tasks.store', ['card_id' => $card->id, 'merchant_id' => $merchant->id]))
+            ->assertUnauthorized();
     }
 
     /** @test */

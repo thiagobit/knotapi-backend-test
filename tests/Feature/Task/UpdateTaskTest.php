@@ -5,6 +5,7 @@ namespace Task;
 use App\Models\Task;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Auth;
 use Tests\ApiTestCase;
 
 class UpdateTaskTest extends ApiTestCase
@@ -22,6 +23,17 @@ class UpdateTaskTest extends ApiTestCase
         $task->refresh();
 
         $this->assertEquals(Task::STATUS_FINISHED, $task->status);
+    }
+
+    /** @test */
+    public function tasks_can_not_be_finished_by_guests()
+    {
+        Auth::logout();
+
+        $task = Task::factory()->create();
+
+        $this->patch(route('v1.tasks.finish', $task))
+            ->assertUnauthorized();
     }
 
     /** @test */
@@ -45,6 +57,17 @@ class UpdateTaskTest extends ApiTestCase
         $task->refresh();
 
         $this->assertEquals(Task::STATUS_FAILED, $task->status);
+    }
+
+    /** @test */
+    public function tasks_can_not_be_failed_by_guests()
+    {
+        Auth::logout();
+
+        $task = Task::factory()->create();
+
+        $this->patch(route('v1.tasks.fail', $task))
+            ->assertUnauthorized();
     }
 
     /** @test */

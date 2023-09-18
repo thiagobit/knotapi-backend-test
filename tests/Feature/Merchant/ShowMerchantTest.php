@@ -5,9 +5,10 @@ namespace Tests\Feature\Merchant;
 use App\Models\Merchant;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Auth;
 use Tests\ApiTestCase;
 
-class StoreMerchantTest extends ApiTestCase
+class ShowMerchantTest extends ApiTestCase
 {
     use RefreshDatabase;
 
@@ -20,6 +21,17 @@ class StoreMerchantTest extends ApiTestCase
             ->assertSuccessful()
             ->assertSee($merchant->name)
             ->assertSee(str_replace('/', '\/', $merchant->website));
+    }
+
+    /** @test */
+    public function merchants_can_not_be_shown_for_guests()
+    {
+        Auth::logout();
+
+        $merchant = Merchant::factory()->create();
+
+        $this->get(route('v1.merchants.show', $merchant->id))
+            ->assertUnauthorized();
     }
 
     /** @test */

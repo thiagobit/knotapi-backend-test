@@ -5,6 +5,7 @@ namespace Tests\Feature\Card;
 use App\Models\Card;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
+use Illuminate\Support\Facades\Auth;
 use Tests\ApiTestCase;
 
 class StoreCardTest extends ApiTestCase
@@ -19,6 +20,17 @@ class StoreCardTest extends ApiTestCase
         $this->post(route('v1.cards.store', $card))
             ->assertSuccessful();
         $this->assertDatabaseHas('cards', $card);
+    }
+
+    /** @test */
+    public function cards_can_not_be_stored_by_guests()
+    {
+        Auth::logout();
+
+        $card = Card::factory()->make()->toArray();
+
+        $this->post(route('v1.cards.store', $card))
+            ->assertUnauthorized();
     }
 
     /** @test */
