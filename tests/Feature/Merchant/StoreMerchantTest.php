@@ -5,9 +5,9 @@ namespace Tests\Feature\Merchant;
 use App\Models\Merchant;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
+use Tests\ApiTestCase;
 
-class StoreMerchantTest extends TestCase
+class StoreMerchantTest extends ApiTestCase
 {
     use RefreshDatabase;
 

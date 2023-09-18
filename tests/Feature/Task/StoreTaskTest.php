@@ -6,9 +6,9 @@ use App\Models\Card;
 use App\Models\Merchant;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
+use Tests\ApiTestCase;
 
-class StoreTaskTest extends TestCase
+class StoreTaskTest extends ApiTestCase
 {
     use RefreshDatabase;
 

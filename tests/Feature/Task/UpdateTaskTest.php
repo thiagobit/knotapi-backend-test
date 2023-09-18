@@ -5,9 +5,9 @@ namespace Task;
 use App\Models\Task;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Foundation\Testing\WithFaker;
-use Tests\TestCase;
+use Tests\ApiTestCase;
 
-class UpdateTaskTest extends TestCase
+class UpdateTaskTest extends ApiTestCase
 {
     use RefreshDatabase;
 
