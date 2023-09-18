@@ -4,6 +4,7 @@ use App\Http\Controllers\Api\v1\AuthController;
 use App\Http\Controllers\Api\v1\CardController;
 use App\Http\Controllers\Api\v1\MerchantController;
 use App\Http\Controllers\Api\v1\TaskController;
+use App\Http\Controllers\Api\v1\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,19 +24,19 @@ Route::prefix('v1')->name('v1.')->group(function () {
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
 
-        Route::name('cards.')->controller(CardController::class)->group(function () {
-            Route::post('/cards', 'store')->name('store');
+        Route::prefix('cards')->name('cards.')->controller(CardController::class)->group(function () {
+            Route::post('/', 'store')->name('store');
         });
 
-        Route::name('merchants.')->controller(MerchantController::class)->group(function () {
-            Route::get('/merchants', 'index')->name('index');
-            Route::get('/merchants/{merchant}', 'show')->name('show');
+        Route::prefix('merchants')->name('merchants.')->controller(MerchantController::class)->group(function () {
+            Route::get('/', 'index')->name('index');
+            Route::get('/{merchant}', 'show')->name('show');
         });
 
-        Route::name('tasks.')->controller(TaskController::class)->group(function () {
-            Route::post('/tasks', 'store')->name('store');
-            Route::patch('/tasks/{task}/finish', 'finish')->name('finish');
-            Route::patch('/tasks/{task}/fail', 'fail')->name('fail');
+        Route::prefix('tasks')->name('tasks.')->controller(TaskController::class)->group(function () {
+            Route::post('/', 'store')->name('store');
+            Route::patch('/{task}/finish', 'finish')->name('finish');
+            Route::patch('/{task}/fail', 'fail')->name('fail');
         });
     });
 });
