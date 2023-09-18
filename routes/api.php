@@ -28,6 +28,7 @@ Route::prefix('v1')->name('v1.')->group(function () {
         });
 
         Route::name('merchants.')->controller(MerchantController::class)->group(function () {
+            Route::get('/merchants', 'index')->name('index');
             Route::get('/merchants/{merchant}', 'show')->name('show');
         });
 
