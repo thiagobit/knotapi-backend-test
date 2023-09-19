@@ -14,7 +14,7 @@ class TaskController extends Controller
      */
     public function store(StoreTaskRequest $request): JsonResponse
     {
-        Task::create($request->validated());
+        Task::create(array_merge(['user_id' => auth()->user()->getAuthIdentifier()], $request->validated()));
 
         return response()->json('', 201);
     }

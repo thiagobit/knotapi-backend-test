@@ -22,7 +22,11 @@ class StoreTaskTest extends ApiTestCase
         $this->post(route('v1.tasks.store', ['card_id' => $card->id, 'merchant_id' => $merchant->id]))
             ->assertSuccessful();
 
-        $this->assertDatabaseHas('tasks', ['card_id' => $card->id, 'merchant_id' => $merchant->id]);
+        $this->assertDatabaseHas('tasks', [
+            'user_id' => $this->user->getAuthIdentifier(),
+            'card_id' => $card->id,
+            'merchant_id' => $merchant->id,
+        ]);
     }
 
     /** @test */

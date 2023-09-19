@@ -13,6 +13,7 @@ class Task extends Model
     const STATUS_FAILED = 'failed';
 
     protected $fillable = [
+        'user_id',
         'card_id',
         'merchant_id',
     ];
