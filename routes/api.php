@@ -37,6 +37,7 @@ Route::prefix('v1')->name('v1.')->group(function () {
         Route::prefix('merchants')->name('merchants.')->controller(MerchantController::class)->group(function () {
             Route::get('/', 'index')->name('index');
             Route::get('/{merchant}', 'show')->name('show');
+            Route::post('/', 'store')->name('store');
         });
 
         Route::prefix('tasks')->name('tasks.')->controller(TaskController::class)->group(function () {

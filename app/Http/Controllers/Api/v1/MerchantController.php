@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Api\v1;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\IndexMerchantRequest;
+use App\Http\Requests\StoreMerchantRequest;
 use App\Models\Merchant;
 use Illuminate\Http\JsonResponse;
 
@@ -28,5 +29,15 @@ class MerchantController extends Controller
     public function show(Merchant $merchant): JsonResponse
     {
         return response()->json($merchant);
+    }
+
+    /**
+     * Store a newly created resource in storage.
+     */
+    public function store(StoreMerchantRequest $request): JsonResponse
+    {
+        $merchant = Merchant::create($request->validated());
+
+        return response()->json($merchant, 201);
     }
 }
