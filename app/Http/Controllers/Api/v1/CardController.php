@@ -5,16 +5,17 @@ namespace App\Http\Controllers\Api\v1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreCardRequest;
 use App\Models\Card;
+use Illuminate\Http\JsonResponse;
 
 class CardController extends Controller
 {
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCardRequest $request)
+    public function store(StoreCardRequest $request): JsonResponse
     {
-        Card::create($request->validated());
+        $card = Card::create($request->validated());
 
-        return response()->json('', 201);
+        return response()->json($card, 201);
     }
 }
