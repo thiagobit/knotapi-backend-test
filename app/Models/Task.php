@@ -12,12 +12,22 @@ class Task extends Model
 
     const STATUS_FINISHED = 'finished';
     const STATUS_FAILED = 'failed';
+    const STATUS_FINISHED_CACHE_TAG = 'user_finished_tasks';
 
     protected $fillable = [
         'user_id',
         'card_id',
         'merchant_id',
     ];
+
+    static public function getCacheKey(int $userId, string $status): ?string
+    {
+        return match ($status) {
+            self::STATUS_FINISHED => "user_{$userId}_finished_tasks",
+            self::STATUS_FAILED => "user_{$userId}_failed_tasks",
+            default => null,
+        };
+    }
 
     public function user(): BelongsTo
     {

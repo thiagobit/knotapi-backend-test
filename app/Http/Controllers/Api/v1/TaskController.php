@@ -7,6 +7,7 @@ use App\Http\Requests\StoreTaskRequest;
 use App\Models\Task;
 use App\Models\User;
 use Illuminate\Http\JsonResponse;
+use Illuminate\Support\Facades\Cache;
 
 class TaskController extends Controller
 {
@@ -31,6 +32,10 @@ class TaskController extends Controller
 
         $task->finish();
 
+        $cacheKey = Task::getCacheKey(auth()->user()->getAuthIdentifier(), Task::STATUS_FINISHED);
+
+        Cache::tags([Task::STATUS_FINISHED_CACHE_TAG])->forget($cacheKey);
+
         return response()->json('', 204);
     }
 
@@ -53,20 +58,24 @@ class TaskController extends Controller
      */
     public function finished(User $user): JsonResponse
     {
-        $tasks = $user->tasks
-            ->where('status', 'finished')
-            ->groupBy(function ($task) {
-                return $task->merchant->name;
-            })
-            ->map(function ($tasks) {
-                return $tasks->map(function ($task) {
-                    return [
-                        'id' => $task->id,
-                        'card_id' => $task->card_id,
-                        'created_at' => $task->created_at->toDateTimeString(),
-                    ];
+        $cacheKey = Task::getCacheKey($user->getAuthIdentifier(), Task::STATUS_FINISHED);
+
+        $tasks = Cache::tags([Task::STATUS_FINISHED_CACHE_TAG])->remember($cacheKey, now()->addMinutes(30), function () use ($user) {
+            return $user->tasks
+                ->where('status', 'finished')
+                ->groupBy(function ($task) {
+                    return $task->merchant->name;
+                })
+                ->map(function ($tasks) {
+                    return $tasks->map(function ($task) {
+                        return [
+                            'id' => $task->id,
+                            'card_id' => $task->card_id,
+                            'created_at' => $task->created_at->toDateTimeString(),
+                        ];
+                    });
                 });
-            });
+        });
 
         return response()->json($tasks);
     }
