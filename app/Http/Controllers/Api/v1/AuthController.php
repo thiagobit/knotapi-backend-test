@@ -12,6 +12,12 @@ use Illuminate\Support\Facades\Hash;
 
 class AuthController extends Controller
 {
+    /**
+     * Register a user.
+     *
+     * @param RegisterUserRequest $request
+     * @return JsonResponse
+     */
     public function register(RegisterUserRequest $request): JsonResponse
     {
         $user = User::create([
