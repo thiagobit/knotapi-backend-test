@@ -4,7 +4,6 @@ use App\Http\Controllers\Api\v1\AuthController;
 use App\Http\Controllers\Api\v1\CardController;
 use App\Http\Controllers\Api\v1\MerchantController;
 use App\Http\Controllers\Api\v1\TaskController;
-use App\Http\Controllers\Api\v1\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -23,6 +22,10 @@ Route::prefix('v1')->name('v1.')->group(function () {
 
     Route::middleware('auth:sanctum')->group(function () {
         Route::post('/logout', [AuthController::class, 'logout'])->name('logout');
+
+        Route::prefix('users')->name('users.')->controller(TaskController::class)->group(function () {
+            Route::get('/{user}/tasks/finished', 'finished')->name('tasks.finished');
+        });
 
         Route::prefix('cards')->name('cards.')->controller(CardController::class)->group(function () {
             Route::post('/', 'store')->name('store');

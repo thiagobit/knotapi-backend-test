@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\v1;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\StoreTaskRequest;
 use App\Models\Task;
+use App\Models\User;
 use Illuminate\Http\JsonResponse;
 
 class TaskController extends Controller
@@ -45,5 +46,28 @@ class TaskController extends Controller
         $task->fail();
 
         return response()->json('', 204);
+    }
+
+    /**
+     * Return user finished tasks
+     */
+    public function finished(User $user): JsonResponse
+    {
+        $tasks = $user->tasks
+            ->where('status', 'finished')
+            ->groupBy(function ($task) {
+                return $task->merchant->name;
+            })
+            ->map(function ($tasks) {
+                return $tasks->map(function ($task) {
+                    return [
+                        'id' => $task->id,
+                        'card_id' => $task->card_id,
+                        'created_at' => $task->created_at->toDateTimeString(),
+                    ];
+                });
+            });
+
+        return response()->json($tasks);
     }
 }
