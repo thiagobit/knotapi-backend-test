@@ -70,7 +70,7 @@ class TaskController extends Controller
                     return $tasks->map(function ($task) {
                         return [
                             'id' => $task->id,
-                            'card_id' => $task->card_id,
+                            'card' => $task->card->number,
                             'created_at' => $task->created_at->toDateTimeString(),
                         ];
                     });
