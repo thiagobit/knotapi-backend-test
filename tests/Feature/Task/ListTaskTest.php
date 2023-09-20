@@ -67,7 +67,7 @@ class ListTaskTest extends ApiTestCase
             ->assertSuccessful()
             ->assertSee($task->merchant->name)
             ->assertSee($task->id)
-            ->assertSee($task->card_id)
+            ->assertSee($task->card->number)
             ->assertSee($task->created_at);
 
         $newTask = Task::factory()->create([
@@ -85,7 +85,7 @@ class ListTaskTest extends ApiTestCase
             ->assertSee($task->created_at)
             ->assertSee($newTask->merchant->name)
             ->assertSee($newTask->id)
-            ->assertSee($newTask->card_id)
+            ->assertSee($newTask->card->number)
             ->assertSee($newTask->created_at);
     }
 }
