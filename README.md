@@ -7,8 +7,17 @@ A REST API created using Laravel 10 for KnotAPI backend developer position test.
 - The Merchant _index_ endpoint has pagination implemented for the efficient retrieval and presentation of large sets of data. It has the objective of reducing the response size, network traffic and processing time.
 - The _Finished Tasks_ endpoint has a cache layer implemented with _Redis_ for performance improvement.
 
+## Requirements
+- [Docker](https://docs.docker.com/engine/install/).
+- [Docker Compose](https://docs.docker.com/compose/install/).
+
 ## Configuration:
-1. Since it's using [Laravel Sail](https://laravel.com/docs/10.x/sail), you need to execute the following command to first install the dependencies and be able to run Sail commands:
+1. Create the `.env` file based on `.env.example`:
+    ```shell
+    cp .env.example .env
+    ```
+
+2. Since it's using [Laravel Sail](https://laravel.com/docs/10.x/sail), you need to execute the following command to first install the dependencies and be able to run Sail commands:
     ```shell
     docker run --rm \
         -u "$(id -u):$(id -g)" \
@@ -18,12 +27,17 @@ A REST API created using Laravel 10 for KnotAPI backend developer position test.
         composer install --ignore-platform-reqs
     ```
 
-2. Create Docker containers:
+3. Create Docker containers:
     ```shell
     ./vendor/bin/sail up -d
     ```
 
-3. Run migrations:
+4. Generate the application key:
+    ```shell
+    ./vendor/bin/sail artisan key:generate
+    ```
+
+5. Run migrations:
     ```shell
     ./vendor/bin/sail artisan migrate
     ```
